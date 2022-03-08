@@ -66,18 +66,18 @@ def Gesture():
 		return val
 
 
-#def loop():
-	#while True:
-		#distance = Sonar()
-		#print("distance:"+str(Sonar()))
-		#print("Hold:"+str(Gesture()))
-		#time.sleep(0.1)
+def loop():
+	while True:
+		distance = Sonar()
+		print("distance:"+str(Sonar()))
+		print("Hold:"+str(Gesture()))
+		time.sleep(0.1)
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
 	#print('Program is Starting...')
 
-	#try:
-		#loop()
-	#except KeyboardInterrupt:
-		#exit()
+	try:
+		loop()
+	except KeyboardInterrupt:
+		exit()
 
