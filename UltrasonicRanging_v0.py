@@ -16,6 +16,13 @@ def is_raspberrypi():
     except Exception: pass
     return False
 
+def getSample():
+    sample = []
+    for i in range(60):
+        distance = is_raspberrypi()
+        sample.append(distance)
+        time.sleep(0.05)
+    return sample
 
 def Hold():
     list = []
@@ -23,41 +30,28 @@ def Hold():
     average = sum(list) / len(list)
     if (0.1*average):
         if average < 12:
-            print("Low Hold")
+            return 'Low Hold'
         elif average > 26 and average < 32:
-            print("High Hold")
+            return 'High Hold'
     return 'Unknown'
 
 def Pass():
-    list = []
-    list.append(is_raspberrypi())
-    for low in range(len(list)):
-        if list[low] < 150:
-            break
-    for high in range(len(list)-1,low,-1):
-        if list[high] < 150:
-            break
-    if low > 0.2*len(list) and high < 0.8*len(list):
-        result = list()
-        if result == 'Low Hold':
-            print("Low Pass")
-        elif result == 'High Hold':
-            print("High Pass")
-    return 'Unknown'
+    low = 6 <= is_raspberrypi() <= 12
+    high = 26 <= is_raspberrypi() <= 32
+    if low == True:
+        return 'Low Pass'
+    if high == True:
+        return 'High Pass'
 
 def PullUp():
-    list = []
-    list.append(is_raspberrypi())
-    for i in range (1,len(list)):
-        if (list[i-1]>list[i]):
+    for i in range (1,len(getSample())):
+        if (getSample()[i-1]>getSample()[i]):
             return 'Unknown'
     return 'Pull Up'
 
 def PushDown():
-    list = []
-    list.append(is_raspberrypi())
-    for i in range(1,len(list)):
-        if (list[i-1]<list[i]):
+    for i in range(1,len(getSample())):
+        if (getSample()[i-1]<getSample()[i]):
             return 'Unknown'
     return 'Push Down'
 
@@ -76,7 +70,7 @@ def Gesture():
         return val
     return 'Unknown'
 
-#def Movements():
+
 
 
 def loop():
