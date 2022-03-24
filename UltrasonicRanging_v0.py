@@ -21,7 +21,7 @@ def getSample():
     for i in range(60):
         distance = is_raspberrypi()
         sample.append(distance)
-        time.sleep(0.05)
+        time.sleep(0.1)
     return sample
 
 def Hold():
@@ -43,15 +43,15 @@ def Pass():
     if high == True:
         return 'High Pass'
 
-def PullUp():
-    for i in range (1,len(getSample())):
-        if (getSample()[i-1]>getSample()[i]):
+def PullUp(sample):
+    for i in range (1,len(sample)):
+        if (sample[i-1]>sample[i]):
             return 'Unknown'
     return 'Pull Up'
 
-def PushDown():
-    for i in range(1,len(getSample())):
-        if (getSample()[i-1]<getSample()[i]):
+def PushDown(sample):
+    for i in range(1,len(sample)):
+        if (sample[i-1]<sample[i]):
             return 'Unknown'
     return 'Push Down'
 
@@ -71,7 +71,25 @@ def Gesture():
     return 'Unknown'
 
 
-
+def Movements():
+    list = []
+    list.append(Gesture())
+    movements = {
+    'Low Pass' : 'Start',
+    'High Pass' : 'Resume',
+    'Low Hold' : 'Stop',
+    'High Hold' : 'Pause',
+    'Pull Up' : 'Louder',
+    'Push Down' : 'Quieter',
+    ('Low Pass','Low Pass') : 'Skip Forward',
+    ('High Pass' , 'High Pass') : 'Skip backward',
+    ('Low Pass', 'Low Hold') : 'Power off',
+    ('High Pass', 'High Hold') : 'Reset',
+    ('Pull Up', ('High Pass' , 'Low Hold')) : 'ActivateAutoMode',
+    ('Push Down', ('Low Pass' , 'High Hold')): 'DisableAutoMode'
+    }
+    commard = movements.get(Gesture())
+    print(commard)
 
 def loop():
     while(True):
@@ -81,6 +99,7 @@ def loop():
         else:
             print ("The distance is : %.2f cm"%(distance))
             print((Gesture()))
+            print(Movements())
             time.sleep(0.1)
         
 if __name__ == '__main__':     # Program entrance
